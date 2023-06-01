@@ -159,12 +159,23 @@ void analisis(){
 
   RooPlot* frame = Bm.frame(5.1, 5.5, 100);
 
-  massDS->plotOn(frame, Name("Data"));
+  massDS->plotOn(frame, Name("data"));
   model.plotOn(frame, Components(sig), LineColor(kViolet-6), LineStyle(kDashed), Name("signal"));
   model.plotOn(frame, Components(bkg), LineColor(kAzure+7), LineStyle(kDashed), Name("bkg"));
+
   model.plotOn(frame, LineColor(kPink-4), Name("model"));
+  TLegend *legMass = new TLegend(0.7,0.85,0.9,0.5);
+  legMass->SetTextSize(0.08);
+  legMass->SetFillColor(0);
+  legMass->SetBorderSize(0);
+  legMass->SetFillStyle(0);
+  legMass->AddEntry(frame->findObject("data"), "Data", "pe");
+  legMass->AddEntry(frame->findObject("model"), "Fit", "l");
+  legMass->AddEntry(frame->findObject("signal"),"Signal","l");
+  legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
 
   frame->Draw();
+  legMass->Draw();
 
   RooHist* massPull = frame->pullHist();
   pad2->cd();
@@ -175,7 +186,7 @@ void analisis(){
   frame2->GetYaxis()->CenterTitle();
   frame2->SetLabelSize(0.06,"XY");
   frame2->Draw();
-  
+
   c->Draw();
   c->SaveAs("massFit.png");
 
