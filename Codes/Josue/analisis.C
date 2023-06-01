@@ -124,7 +124,10 @@ void analisis(){
   //Signal
   RooRealVar mean("mean", "mean", 5.28, 5.1, 5.5);
   RooRealVar sigma("sigma", "sigma", .02, 0.0, 0.04);
-  RooGaussian sig("sig", "sig", Bm, mean, sigma);
+  RooRealVar alpha("alpha", "alpha", 1, 0.0, 5);
+  RooRealVar n("n", "n", 3, 0, 5);
+  //RooGaussian sig("sig", "sig", Bm, mean, sigma);
+  RooCBShape sig("sig", "sig", Bm, mean, sigma, alpha, n);
   //Bkg
   RooRealVar a0("a0", "a0", -1,1);
   RooRealVar a1("a1", "a1", -1,1);
