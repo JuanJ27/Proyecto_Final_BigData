@@ -1,8 +1,7 @@
-#include "treeClass.h"
 using namespace RooFit; 
 
 void analisis(){
-  TFile *f = new TFile("ROOTS_Bdkstar_AOD_2018_3_best1.root");
+  TFile *f = new TFile("./../../../ROOTS_Bdkstar_AOD_2018_3_best1.root");
   TTree* t = (TTree*) f->Get ("treeS");
 
   Double_t        massB;
@@ -156,7 +155,7 @@ void analisis(){
   pad2->Draw();
 
   pad1->cd();
-
+  gPad->SetLogy();
   RooPlot* frame = Bm.frame(5.1, 5.5, 100);
 
   massDS->plotOn(frame, Name("data"));
@@ -173,7 +172,8 @@ void analisis(){
   legMass->AddEntry(frame->findObject("model"), "Fit", "l");
   legMass->AddEntry(frame->findObject("signal"),"Signal","l");
   legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
-
+  frame->SetMinimum(1E2);
+  frame->SetMaximum(1E4);
   frame->Draw();
   legMass->Draw();
 
