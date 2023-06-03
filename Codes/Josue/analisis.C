@@ -141,31 +141,36 @@ void analisis(){
   RooFitResult* result = model.fitTo(*massDS, Extended(kTRUE), Save(kTRUE));
 
 
-  TCanvas *c = new TCanvas("c", "c", 800, 600);
+  TCanvas *c = new TCanvas("c", "c", 1000, 700);
 
-  TPad *pad1 = new TPad("p1", "", 0.01,0.411,0.9903769, 0.99);
-  pad1->SetLeftMargin(0.09);   
+  TPad *pad1 = new TPad("p1", "", 0.01,0.4,0.9903769, 0.99);
+  pad1->SetLeftMargin(0.13);   
   pad1->SetRightMargin(0.019);
+  pad1->SetBottomMargin(0.15);
   pad1->SetTopMargin(0.09);
-  pad1->SetBottomMargin(0.0);  
   pad1->Draw();
 
-  TPad *pad2 = new TPad("p2", "", 0.01,0.01,0.9903769,0.41);
-  pad2->SetLeftMargin(0.09);
-  pad2->SetRightMargin(0.019);  
-  pad2->SetTopMargin(0.0);
-  pad2->SetBottomMargin(0.25);
+  TPad *pad2 = new TPad("p2", "", 0.01,0.01,0.9903769,0.39);
+  pad2->SetLeftMargin(0.13);
+  pad2->SetRightMargin(0.019);
+  pad2->SetBottomMargin(0.1);
+  pad2->SetTopMargin(0.09);
   pad2->Draw();
 
   pad1->cd();
   gPad->SetLogy();
   RooPlot* frame = Bm.frame(5.1, 5.5, 100);
+  frame->SetTitle("");
+  frame->SetXTitle("M(J/#psiK^{*0})(GeV)"); frame->GetXaxis()->CenterTitle();
+  frame->SetYTitle("Events"); frame->GetYaxis()->CenterTitle();
+  frame->SetTitleSize(0.06, "XY"); 
+  frame->SetLabelSize(0.05,"XY");
 
   massDS->plotOn(frame, Name("data"));
-  model.plotOn(frame, Components(sig), LineColor(kViolet-6), LineStyle(kDashed), Name("signal"));
-  model.plotOn(frame, Components(bkg), LineColor(kAzure+7), LineStyle(kDashed), Name("bkg"));
+  model.plotOn(frame, Components(sig), LineColor(kRed), Name("signal"));
+  model.plotOn(frame, Components(bkg), LineColor(kBlack), Name("bkg"));
+  model.plotOn(frame, LineColor(kBlue), Name("model"));
 
-  model.plotOn(frame, LineColor(kPink-4), Name("model"));
   TLegend *legMass = new TLegend(0.7,0.85,0.9,0.5);
   legMass->SetTextSize(0.08);
   legMass->SetFillColor(0);
@@ -176,9 +181,14 @@ void analisis(){
   legMass->AddEntry(frame->findObject("signal"),"Signal","l");
   legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
   frame->SetMinimum(1E2);
-  frame->SetMaximum(1E4);
+  frame->SetMaximum(3E4);
   frame->Draw();
   legMass->Draw();
+
+  auto mtext = new TLatex();
+  mtext->SetTextSize(0.11);
+  mtext->SetTextFont(42);
+  mtext->DrawLatex(5.25, 9000, "B^{0}");
 
   RooHist* massPull = frame->pullHist();
   pad2->cd();
@@ -193,4 +203,12 @@ void analisis(){
   c->Draw();
   c->SaveAs("massFit.png");
 
+  ofstream salida("fitData.txt");
+  salida << a0.getVal() << a0.getError() << " " << a1.getVal() << 
+  " " << a1.getError() << " " << mean.getVal() << " " << mean.getError() <<
+  " " << sigma.getVal() << " " << sigma.getError() << " " << alpha.getVal() << 
+  " " << alpha.getError() << " " << n.getVal() << " " << n.getError() << 
+  " " << nbkg.getVal() << " " << nbkg.getError() << 
+  " " << nsig.getVal() << " " << nsig.getError();
+  salida.close();
 }
