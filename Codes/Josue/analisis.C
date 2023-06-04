@@ -149,6 +149,12 @@ void analisis(){
   //Canvas 1
   TCanvas *c1 = new TCanvas("c1", "c1", 900, 700);
   c1->cd();
+  TPad *pad = new TPad("p", "", 0.01,0.01,0.99,0.99);
+  pad->SetLeftMargin(0.13);   
+  pad->SetRightMargin(0.019);
+  pad->SetBottomMargin(0.15);
+  pad->SetTopMargin(0.09);
+  pad->Draw();
 
   gPad->SetLogy();
   RooPlot* frame = Bm.frame(5.1, 5.5, 70);
