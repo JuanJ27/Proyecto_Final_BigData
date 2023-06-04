@@ -155,7 +155,7 @@ void analisis(){
   pad->SetBottomMargin(0.15);
   pad->SetTopMargin(0.09);
   pad->Draw();
-
+  pad->cd();
   gPad->SetLogy();
   RooPlot* frame = Bm.frame(5.1, 5.5, 70);
   frame->SetTitle("");
