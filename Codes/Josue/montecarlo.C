@@ -51,7 +51,7 @@ void montecarlo(){
     RooDataSet nbkgDset("nbkgPULL", "nbkgPULL", RooArgSet(nbkgPull));
 
     RooRandom::randomGenerator()->SetSeed(84329746);
-    for(int i=0; i<30; i++){
+    for(int i=0; i<100; i++){
 
       mean.setVal(meanf); mean.setError(meanfErr);
       sigma.setVal(sigmaf); sigma.setError(sigmafErr);
