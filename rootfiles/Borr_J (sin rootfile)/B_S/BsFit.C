@@ -214,7 +214,7 @@ TCanvas* CreateCanvasNomPull(TString cname, RooFitResult* result, RooDataSet dat
   Double_t G = sqrt( fs.getVal()*width.getVal()*width.getVal() + (1-fs.getVal())*width2.getVal()*width2.getVal() )*1000.0;
   Double_t GE = (1/G)*sqrt( (fs.getVal()*fs.getVal())*(width.getVal()*width.getVal())*(width.getError()*width.getError()) + ((1-fs.getVal())*(1-fs.getVal()))*(width2.getVal()*width2.getVal())*(width2.getError()*width2.getError()) )*1000.0*1000.0;
   
-  TLegend *legpar = new TLegend(0.05,0.43,0.3,0.55);
+  TLegend *legpar = new TLegend(0.05,0.43,0.3,0.65);
   legpar->SetTextSize(0.03);
   legpar->SetTextFont(42);
   legpar->SetFillColor(0);
@@ -222,6 +222,8 @@ TCanvas* CreateCanvasNomPull(TString cname, RooFitResult* result, RooDataSet dat
   legpar->SetFillStyle(0);
   legpar->AddEntry("",Form("M(B_{s}^{0}) = %1.1f #pm %1.1f MeV",Mpsi,MpsiE),"");
   legpar->AddEntry("",Form("#sigma = %1.1f #pm %1.1f MeV",G,GE),"");
+  legpar->AddEntry("",Form("N_{B_{s}^{0}} = %1.0f #pm %1.0f",Ns.getVal(),Ns.getError()),"");
+  legpar->AddEntry("",Form("N_{bkg} = %1.0f #pm %1.0f",Nb.getVal(),Nb.getError()),"");
   legpar->Draw();
 
  TLegend *legMass = new TLegend(0.39,0.67,0.4,0.75);

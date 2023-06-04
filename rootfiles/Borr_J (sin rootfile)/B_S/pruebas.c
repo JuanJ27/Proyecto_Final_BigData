@@ -351,8 +351,8 @@ for(Long64_t jentry=0; jentry<nentries;jentry++)
  //RooRealVar meanB("#muB"," Mass mean B",3.63,3.75,"GeV");
  RooRealVar width2("width2"," Mass width2 ",0.020,0.015,0.05,"GeV");
  RooGaussian Sig2("Sig2"," Signal PDF B",M,mean,width2);
- RooRealVar c("c", "c", 10000000.0); // Parámetro de forma
- RooRealVar p("p", "p", 5.4); // Parámetro de corte
+ RooRealVar c("c", "c", 1.0,5,10); // Parámetro de forma
+ RooRealVar p("p", "p", 5.4,5.35,5.49); // Parámetro de corte
  RooArgusBG argu("argu", "argu", M, c, p); // Definir la función de Argus
 
  //********final PDF ********
