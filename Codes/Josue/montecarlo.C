@@ -35,8 +35,8 @@ void montecarlo(){
     RooChebychev bkg("bkg", "bkg", m, RooArgList(a0, a1));
 
     //Num eventos
-    RooRealVar nsig("nsig","nsig",100000,105000);
-    RooRealVar nbkg("nbkg","nbkg",4000,45000);
+    RooRealVar nsig("nsig","nsig",0,110000);
+    RooRealVar nbkg("nbkg","nbkg",0,50000);
     
     //Pdf total
     RooAddPdf model("model","sig+bkg", RooArgList(sig,bkg), RooArgList(nsig,nbkg));
@@ -51,7 +51,7 @@ void montecarlo(){
     RooDataSet nbkgDset("nbkgPULL", "nbkgPULL", RooArgSet(nbkgPull));
 
     RooRandom::randomGenerator()->SetSeed(84329746);
-    for(int i=0; i<20; i++){
+    for(int i=0; i<100; i++){
 
       mean.setVal(meanf); mean.setError(meanfErr);
       sigma.setVal(sigmaf); sigma.setError(sigmafErr);
@@ -76,7 +76,7 @@ void montecarlo(){
       cout << i << endl;
 
       RooDataSet* toyData = model.generate(RooArgSet(m), Extended(kTRUE));
-      RooFitResult* result = model.fitTo(*toyData, Extended(kTRUE), Minos(kFALSE), Save(kTRUE));
+      RooFitResult* result = model.fitTo(*toyData, Extended(kTRUE), Minos(kFALSE), Save(kTRUE), NumCPU(4));
 
       massPull.setVal((mean.getVal() - meanf) / mean.getError());
       mpDset.add(RooArgSet(massPull));
@@ -115,42 +115,42 @@ void montecarlo(){
     
     RooPlot* mframe2 = massPull.frame(-6, 6, 30);
     mpDset.plotOn(mframe2);
-    massPullGauss.plotOn(mframe2, LineColor(kBlue-9));
+    massPullGauss.plotOn(mframe2, LineColor(kBlue));
     
     mframe2->SetTitle("Mass pull distribution");
     mframe2->Draw();
 
-    auto mtext = new TLatex();
-    mtext->SetTextSize(0.04);
-    mtext->SetTextFont(42);
-    mtext->DrawLatex(0.6, 35,Form("#mu = %1.4f #pm %1.4f", masPullMean.getVal(), masPullMean.getError()));
-    mtext->DrawLatex(0.6, 32,Form("#sigma = %1.4f #pm %1.4f", massPullSigma.getVal(), massPullSigma.getError()));
+    // auto mtext = new TLatex();
+    // mtext->SetTextSize(0.04);
+    // mtext->SetTextFont(42);
+    // mtext->DrawLatex(0.6, 35,Form("#mu = %1.4f #pm %1.4f", masPullMean.getVal(), masPullMean.getError()));
+    // mtext->DrawLatex(0.6, 32,Form("#sigma = %1.4f #pm %1.4f", massPullSigma.getVal(), massPullSigma.getError()));
 
     pad2->cd();
     RooPlot* sframe = nsigPull.frame(-6, 6, 30);
     nsigDset.plotOn(sframe);
-    sigPullGauss.plotOn(sframe, LineColor(kBlue-9));
+    sigPullGauss.plotOn(sframe, LineColor(kBlue));
     sframe->SetTitle("Signal event pull distribution");
     sframe->Draw();
 
-    auto stext = new TLatex();
-    stext->SetTextSize(0.04);
-    stext->SetTextFont(42);
-    stext->DrawLatex(0.6, 45,Form("#mu = %1.4f #pm %1.4f", sigPullMean.getVal(), sigPullMean.getError()));
-    stext->DrawLatex(0.6, 43,Form("#sigma = %1.4f #pm %1.4f", sigPullSigma.getVal(), sigPullSigma.getError()));
+    // auto stext = new TLatex();
+    // stext->SetTextSize(0.04);
+    // stext->SetTextFont(42);
+    // stext->DrawLatex(0.6, 45,Form("#mu = %1.4f #pm %1.4f", sigPullMean.getVal(), sigPullMean.getError()));
+    // stext->DrawLatex(0.6, 43,Form("#sigma = %1.4f #pm %1.4f", sigPullSigma.getVal(), sigPullSigma.getError()));
 
     pad3->cd();
     RooPlot* bframe = nbkgPull.frame(-6, 6, 30);
     nbkgDset.plotOn(bframe);
-    bkgPullGauss.plotOn(bframe, LineColor(kBlue-9));
-    bframe->SetTitle("Bakcground event pull distribution");
+    bkgPullGauss.plotOn(bframe, LineColor(kBlue));
+    bframe->SetTitle("Background event pull distribution");
     bframe->Draw();
 
-    auto btext = new TLatex();
-    btext->SetTextSize(0.04);
-    btext->SetTextFont(42);
-    btext->DrawLatex(0.6, 40,Form("#mu = %1.4f #pm %1.4f", bkgPullMean.getVal(), bkgPullMean.getError()));
-    btext->DrawLatex(0.6, 38,Form("#sigma = %1.4f #pm %1.4f", bkgPullSigma.getVal(), bkgPullSigma.getError()));
+    // auto btext = new TLatex();
+    // btext->SetTextSize(0.04);
+    // btext->SetTextFont(42);
+    // btext->DrawLatex(0.6, 40,Form("#mu = %1.4f #pm %1.4f", bkgPullMean.getVal(), bkgPullMean.getError()));
+    // btext->DrawLatex(0.6, 38,Form("#sigma = %1.4f #pm %1.4f", bkgPullSigma.getVal(), bkgPullSigma.getError()));
 
 
     c2->Draw();
