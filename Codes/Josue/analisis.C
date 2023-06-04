@@ -147,7 +147,7 @@ void analisis(){
 
 
   //Canvas 1
-  TCanvas *c1 = new TCanvas("c1", "c1", 700, 500);
+  TCanvas *c1 = new TCanvas("c1", "c1", 900, 700);
   c1->cd();
 
   gPad->SetLogy();
@@ -159,8 +159,8 @@ void analisis(){
   frame->SetLabelSize(0.05,"XY");
 
   massDS->plotOn(frame, Name("data"), MarkerSize(1.0),XErrorSize(0));
-  model.plotOn(frame, Components(sig), LineColor(kRed), LineWidth(1), Name("signal"));
-  model.plotOn(frame, Components(bkg), LineColor(kBlack), LineWidth(1), Name("bkg"));
+  model.plotOn(frame, Components(sig), LineColor(kRed), LineWidth(2), Name("signal"));
+  model.plotOn(frame, Components(bkg), LineColor(kBlack), LineWidth(2), Name("bkg"));
   model.plotOn(frame, LineColor(kBlue), LineWidth(1), Name("model"));
 
   TLegend *legMass = new TLegend(0.7,0.85,0.9,0.5);
@@ -172,6 +172,7 @@ void analisis(){
   legMass->AddEntry(frame->findObject("model"), "Fit", "l");
   legMass->AddEntry(frame->findObject("signal"),"Signal","l");
   legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
+
   frame->SetMinimum(1E2);
   frame->SetMaximum(6E4);
   frame->Draw();
@@ -212,18 +213,10 @@ void analisis(){
   frame->SetLabelSize(0.05,"XY");
 
   massDS->plotOn(frame, Name("data"), MarkerSize(1.0),XErrorSize(0));
-  model.plotOn(frame, Components(sig), LineColor(kRed), LineWidth(1), Name("signal"));
-  model.plotOn(frame, Components(bkg), LineColor(kBlack), LineWidth(1), Name("bkg"));
+  model.plotOn(frame, Components(sig), LineColor(kRed), LineWidth(2), Name("signal"));
+  model.plotOn(frame, Components(bkg), LineColor(kBlack), LineWidth(2), Name("bkg"));
   model.plotOn(frame, LineColor(kBlue), LineWidth(1), Name("model"));
 
-  legMass->SetTextSize(0.08);
-  legMass->SetFillColor(0);
-  legMass->SetBorderSize(0);
-  legMass->SetFillStyle(0);
-  legMass->AddEntry(frame->findObject("data"), "Data", "pe");
-  legMass->AddEntry(frame->findObject("model"), "Fit", "l");
-  legMass->AddEntry(frame->findObject("signal"),"Signal","l");
-  legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
   frame->SetMinimum(1E2);
   frame->SetMaximum(6E4);
   frame->Draw();
