@@ -51,7 +51,7 @@ void montecarlo(){
     RooDataSet nbkgDset("nbkgPULL", "nbkgPULL", RooArgSet(nbkgPull));
 
     RooRandom::randomGenerator()->SetSeed(84329746);
-    for(int i=0; i<20; i++){
+    for(int i=0; i<100; i++){
 
       mean.setVal(meanf); mean.setError(meanfErr);
       sigma.setVal(sigmaf); sigma.setError(sigmafErr);
@@ -76,7 +76,7 @@ void montecarlo(){
       cout << i << endl;
 
       RooDataSet* toyData = model.generate(RooArgSet(m), Extended(kTRUE));
-      RooFitResult* result = model.fitTo(*toyData, Extended(kTRUE), Minos(kFALSE), Save(kTRUE));
+      RooFitResult* result = model.fitTo(*toyData, Extended(kTRUE), Minos(kFALSE), Save(kTRUE), NumCPU(4));
 
       massPull.setVal((mean.getVal() - meanf) / mean.getError());
       mpDset.add(RooArgSet(massPull));
@@ -143,7 +143,7 @@ void montecarlo(){
     RooPlot* bframe = nbkgPull.frame(-6, 6, 30);
     nbkgDset.plotOn(bframe);
     bkgPullGauss.plotOn(bframe, LineColor(kBlue-9));
-    bframe->SetTitle("Bakcground event pull distribution");
+    bframe->SetTitle("Background event pull distribution");
     bframe->Draw();
 
     auto btext = new TLatex();
