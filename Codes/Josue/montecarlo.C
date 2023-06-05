@@ -94,22 +94,8 @@ void montecarlo(){
     RooGaussian massPullGauss("massPullGauss", "massPullGauss", massPull, masPullMean, massPullSigma);
     massPullGauss.fitTo(mpDset, Extended(kTRUE), Save(kTRUE));
 
-    //Fit Pull nsignal
-    RooRealVar sigPullMean("sigPullMean", "sigPullMean", 0, -.5, .5);
-    RooRealVar sigPullSigma("sigPullSigma", "sigPullSigma", 1, 0.5, 1.5);
-    RooGaussian sigPullGauss("sigPullGauss", "sigPullGauss", nsigPull, sigPullMean, sigPullSigma);
-    sigPullGauss.fitTo(nsigDset, Extended(kTRUE), Save(kTRUE));
-
-    //Fit Pull nsignal
-    RooRealVar bkgPullMean("bkgPullMean", "bkgPullMean", 0, -.5, .5);
-    RooRealVar bkgPullSigma("bkgPullSigma", "bkgPullSigma", 1, 0.5, 1.5);
-    RooGaussian bkgPullGauss("bkgPullGauss", "bkgPullGauss", nbkgPull, bkgPullMean, bkgPullSigma);
-    bkgPullGauss.fitTo(nbkgDset, Extended(kTRUE), Save(kTRUE));
-
-    TCanvas* c2 = new TCanvas("c2", "c2", 1400, 600);
-    TPad *pad1 = new TPad("p1", "", 0.01,0.05,0.32, 0.99); pad1->Draw();
-    TPad *pad2 = new TPad("p2", "", 0.33,0.05,0.65, 0.99); pad2->Draw();
-    TPad *pad3 = new TPad("p3", "", 0.67,0.05,0.99, 0.99); pad3->Draw();
+    TCanvas* c2 = new TCanvas("c2", "c2", 900, 700);
+    TPad *pad1 = new TPad("p1", "", 0.01,0.01,0.99, 0.99); pad1->Draw();
 
     pad1->cd();
     
@@ -117,41 +103,14 @@ void montecarlo(){
     mpDset.plotOn(mframe2);
     massPullGauss.plotOn(mframe2, LineColor(kBlue));
     
-    mframe2->SetTitle("Mass pull distribution");
+    mframe2->SetTitle("Mass pull distribution with Toy Montecarlo");
     mframe2->Draw();
 
-    // auto mtext = new TLatex();
-    // mtext->SetTextSize(0.04);
-    // mtext->SetTextFont(42);
-    // mtext->DrawLatex(0.6, 35,Form("#mu = %1.4f #pm %1.4f", masPullMean.getVal(), masPullMean.getError()));
-    // mtext->DrawLatex(0.6, 32,Form("#sigma = %1.4f #pm %1.4f", massPullSigma.getVal(), massPullSigma.getError()));
-
-    pad2->cd();
-    RooPlot* sframe = nsigPull.frame(-6, 6, 30);
-    nsigDset.plotOn(sframe);
-    sigPullGauss.plotOn(sframe, LineColor(kBlue));
-    sframe->SetTitle("Signal event pull distribution");
-    sframe->Draw();
-
-    // auto stext = new TLatex();
-    // stext->SetTextSize(0.04);
-    // stext->SetTextFont(42);
-    // stext->DrawLatex(0.6, 45,Form("#mu = %1.4f #pm %1.4f", sigPullMean.getVal(), sigPullMean.getError()));
-    // stext->DrawLatex(0.6, 43,Form("#sigma = %1.4f #pm %1.4f", sigPullSigma.getVal(), sigPullSigma.getError()));
-
-    pad3->cd();
-    RooPlot* bframe = nbkgPull.frame(-6, 6, 30);
-    nbkgDset.plotOn(bframe);
-    bkgPullGauss.plotOn(bframe, LineColor(kBlue));
-    bframe->SetTitle("Background event pull distribution");
-    bframe->Draw();
-
-    // auto btext = new TLatex();
-    // btext->SetTextSize(0.04);
-    // btext->SetTextFont(42);
-    // btext->DrawLatex(0.6, 40,Form("#mu = %1.4f #pm %1.4f", bkgPullMean.getVal(), bkgPullMean.getError()));
-    // btext->DrawLatex(0.6, 38,Form("#sigma = %1.4f #pm %1.4f", bkgPullSigma.getVal(), bkgPullSigma.getError()));
-
+    auto mtext = new TLatex();
+    mtext->SetTextSize(0.04);
+    mtext->SetTextFont(42);
+    mtext->DrawLatex(1, 16,Form("#mu = %1.4f #pm %1.4f", masPullMean.getVal(), masPullMean.getError()));
+    mtext->DrawLatex(1, 14,Form("#sigma = %1.4f #pm %1.4f", massPullSigma.getVal(), massPullSigma.getError()));
 
     c2->Draw();
     c2->SaveAs("monteCarlo.png");
