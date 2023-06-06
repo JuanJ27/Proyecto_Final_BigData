@@ -234,6 +234,11 @@ void analisis(){
   mtext->SetTextFont(42);
   mtext->DrawLatex(5.25, 9000, "B^{0}");
 
+  auto text = new TLatex();
+  text->SetTextSize(0.04);
+  text->SetTextFont(42);
+  text->DrawLatex(5.125, 1.4e4,Form("#mu = %1.4f #pm %1.4f GeV", mean.getVal(), mean.getError()));
+
   RooHist* massPull = frame->pullHist();
   pad2->cd();
   RooPlot* frame2 = Bm.frame(Title("Pull Distribution")) ;
