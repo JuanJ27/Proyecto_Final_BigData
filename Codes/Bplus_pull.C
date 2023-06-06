@@ -284,8 +284,8 @@ void Bplus_pull(Double_t ptl=20.0, Double_t pth=23.0){
     ch->Add("../rootfiles/reducetree_Bujk_AOD_3_best1.root/butree");
 
     TTree *tree = (TTree*) ch;
-    //Long64_t nentries = tree->GetEntries();
-    Long64_t nentries = 1000;
+    Long64_t nentries = tree->GetEntries();
+    //Long64_t nentries = 1000;
 
     tree->SetBranchAddress ("B_mass", &B_mass);
     tree->SetBranchAddress ("J_mass", &J_mass);
@@ -545,7 +545,7 @@ void Bplus_pull(Double_t ptl=20.0, Double_t pth=23.0){
     //canvas->SaveAs("fit_Bplus.png");
     canvas->SaveAs("fit.png");
     */
-    
+    /*
     ofstream salida_TotalFit("Data/output_BuFit.txt");
     salida_TotalFit.is_open();
     //save_resultTfit(salida_TotalFit, nsig, nbkg, mean, sigma1, sigma2, d0, d1, a0);
@@ -557,5 +557,5 @@ void Bplus_pull(Double_t ptl=20.0, Double_t pth=23.0){
     TCanvas* canv_nominalpull = CreateCanvasNomPull("canv_nominalpull", result, data, m, Mmax, Mmin, model, sig2, sig1, sig, exp, genpdf, sig3, bkg, nsig, nbkg, sigma1, sigma2, sig1frac, mean, ptl, pth);  
     canv_nominalpull->Print(Form("Plots_fit/mass_BuFitpull_ptbins_%1.0f_%1.0f.png",ptl,pth));
     //canv_nominalpull->Print(Form("plots_ptandeta/mass_BsFitpull_ptbins_%1.0f_%1.0f.pdf",ptl,pth));
-    
+    */
 }
