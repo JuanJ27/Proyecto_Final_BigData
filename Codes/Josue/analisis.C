@@ -133,6 +133,7 @@ void analisis(){
   RooRealVar n("n", "n", 3, 0, 5);
 
   RooCBShape sig("sig", "sig", Bm, mean, sigma, alpha, n);
+
   //Bkg
   RooRealVar a0("a0", "a0", -1,1);
   RooRealVar a1("a1", "a1", -1,1);
@@ -151,7 +152,7 @@ void analisis(){
   c1->cd();
   TPad *pad = new TPad("p", "", 0.01,0.01,0.99,0.99);
   pad->SetLeftMargin(0.13);   
-  pad->SetRightMargin(0.019);
+  pad->SetRightMargin(0.021);
   pad->SetBottomMargin(0.15);
   pad->SetTopMargin(0.09);
   pad->Draw();
@@ -163,21 +164,22 @@ void analisis(){
   frame->SetYTitle("Events"); frame->GetYaxis()->CenterTitle();
   frame->SetTitleSize(0.06, "XY"); 
   frame->SetLabelSize(0.05,"XY");
+  frame->GetXaxis()->SetNdivisions(8, 1, 5);
 
   massDS->plotOn(frame, Name("data"), MarkerSize(1.0),XErrorSize(0));
   model.plotOn(frame, Components(sig), LineColor(kRed), LineWidth(2), Name("signal"));
   model.plotOn(frame, Components(bkg), LineColor(kBlack), LineWidth(2), Name("bkg"));
-  model.plotOn(frame, LineColor(kBlue), LineWidth(1), Name("model"));
+  model.plotOn(frame, LineColor(kBlue), LineWidth(2), Name("model"));
 
   TLegend *legMass = new TLegend(0.7,0.85,0.9,0.5);
-  legMass->SetTextSize(0.08);
+  legMass->SetTextSize(0.06);
   legMass->SetFillColor(0);
   legMass->SetBorderSize(0);
   legMass->SetFillStyle(0);
   legMass->AddEntry(frame->findObject("data"), "Data", "pe");
-  legMass->AddEntry(frame->findObject("model"), "Fit", "l");
+  legMass->AddEntry(frame->findObject("model"), "Fit result", "l");
   legMass->AddEntry(frame->findObject("signal"),"Signal","l");
-  legMass->AddEntry(frame->findObject("bkg"),"Bkg","l");
+  legMass->AddEntry(frame->findObject("bkg"),"Comb. bkg.","l");
 
   frame->SetMinimum(1E2);
   frame->SetMaximum(6E4);
@@ -185,15 +187,15 @@ void analisis(){
   legMass->Draw();
 
   auto mtext = new TLatex();
-  mtext->SetTextSize(0.11);
+  mtext->SetTextSize(0.09);
   mtext->SetTextFont(42);
-  mtext->DrawLatex(5.25, 9000, "B^{0}");
+  mtext->DrawLatex(5.22, 9000, "B^{0}");
 
   c1->Draw();
   c1->SaveAs("massFit.png");
 
   //Canvas 2
-  TCanvas *c = new TCanvas("c", "c", 1000, 700);
+  TCanvas *c = new TCanvas("c", "c", 800, 700);
   c->cd();
 
   TPad *pad1 = new TPad("p1", "", 0.01,0.4,0.9903769, 0.99);
@@ -231,6 +233,11 @@ void analisis(){
   mtext->SetTextSize(0.11);
   mtext->SetTextFont(42);
   mtext->DrawLatex(5.25, 9000, "B^{0}");
+
+  auto text = new TLatex();
+  text->SetTextSize(0.04);
+  text->SetTextFont(42);
+  text->DrawLatex(5.125, 1.4e4,Form("#mu = %1.4f #pm %1.4f GeV", mean.getVal(), mean.getError()));
 
   RooHist* massPull = frame->pullHist();
   pad2->cd();
