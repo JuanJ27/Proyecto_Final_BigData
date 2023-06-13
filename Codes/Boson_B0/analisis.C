@@ -113,6 +113,7 @@ void analisis(){
     //Mass windows cuts
     if(massB<5.1 || massB>5.5) continue;
     if(massJ<=3.0969-0.150 || massJ>=3.0969+0.150) continue;
+
     if(Bpt<20.0 || Bpt>23.0) continue;
     if(mu1pt<4.0) continue;
     if(mu2pt<4.0) continue;
